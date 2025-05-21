@@ -5,7 +5,8 @@ import { useForm } from 'react-hook-form'
 import axios from 'axios'
 import { toast, ToastContainer } from 'react-toastify'
 
-export default function Login() {
+export default function Login({SaveLoginData}) {
+  
   let Navigate=useNavigate();
   // useForm هي الهوك الي بيقول للكمبوننت اني بشتغل بالرياكت هوك
   // الفورم هي الداتا الي بتعامل معاها + الجزء تاع الفلديشن +الجزء تاع ال api
@@ -23,6 +24,8 @@ export default function Login() {
           let response =await axios.post("https://upskilling-egypt.com:3006/api/v1/Users/Login",data)
           console.log(response);
           toast.success('You have successfully logged in ✅');
+          localStorage.setItem('token',response.data.token);
+          SaveLoginData();
           Navigate('/dashboard')
         }catch (error){
           toast.error('Login failed ❌');
@@ -44,7 +47,7 @@ export default function Login() {
                 {/* وروح ابعتلها الاون سبمت  */}
                 <form onSubmit={handleSubmit(onSubmit)}>
                            <div className="input-group mb-3">
-                                <span class="input-group-text" id="basic-addon1">
+                                <span className="input-group-text" id="basic-addon1">
                                      <i className="fa-solid fa-envelope"></i>
                                 </span>
                                 {/* هنا بيحضر داتا للباك لانو الباك هو الي هياخد الداتا*/}
@@ -62,7 +65,7 @@ export default function Login() {
                            {/* بداخل السبان لازم احددله جمله الايرور الي هتطلع واي وجده فيهم*/}
                           {errors.email && <span className='text-danger'>{errors.email.message}</span>}
                            <div className="input-group mb-3">
-                                <span class="input-group-text" id="basic-addon1">
+                                <span className="input-group-text" id="basic-addon1">
                                     <i className="fa-solid fa-lock"></i>
                                 </span>
                                 <input  {...register('password',{

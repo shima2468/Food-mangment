@@ -40,7 +40,7 @@ export default function ResetPass() {
                       {/* وروح ابعتلها الاون سبمت  */}
                       <form onSubmit={handleSubmit(onSubmit)}>
                                  <div className="input-group mb-3">
-                                      <span class="input-group-text" id="basic-addon1">
+                                      <span className="input-group-text" id="basic-addon1">
                                            <i className="fa-solid fa-envelope"></i>
                                       </span>
                                       {/* هنا بيحضر داتا للباك لانو الباك هو الي هياخد الداتا*/}
@@ -58,7 +58,7 @@ export default function ResetPass() {
                                  {/* بداخل السبان لازم احددله جمله الايرور الي هتطلع واي وجده فيهم*/}
                                 {errors.email && <span className='text-danger'>{errors.email.message}</span>}
                                  <div className="input-group mb-3">
-                                      <span class="input-group-text" id="basic-addon1">
+                                      <span className="input-group-text" id="basic-addon1">
                                           <i className="fa-solid fa-lock"></i>
                                       </span>
                                       <input  {...register('seed',{

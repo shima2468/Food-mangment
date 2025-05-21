@@ -7,3 +7,59 @@
 .bg-overlay{
    background:linear-gradient(45deg,rgba(47, 140, 96, .6),rgba(0, 0, 0, 0.6)) ;
 }
+
+.sidebar-cont .ps-sidebar-container{
+    background-color:rgba(31, 38, 62, 1) ;
+    height: 100vh ;
+    border-top-right-radius: 60px;
+}
+.sidebar-cont .ps-menu-button{
+    color: #fff !important;
+  
+}
+
+.sidebar-cont .ps-menu-button:hover{
+    background-color:rgba(0, 146, 77, 0.1) !important ;
+    border-left:4px solid rgba(0, 146, 77, 1)  ;
+}
+
+.sidebar-cont .sidebar-logo a:hover{
+             background-color: transparent !important ;
+              border-left:none  ;
+}
+
+.sidebar-cont .sidebar-logo a{
+      padding: 0 !important;
+} 
+
+.header-bg{
+    background-image: url('./assets/images/Headerbg.png');
+    background-size: cover;
+    width: 100%;
+    border-radius: 12px;
+}
+.navbar-bg{
+    background-color: rgba(240, 255, 239, 1);
+     border-radius: 12px;
+}
+
+.home-des{
+      background-color: rgba(240, 255, 239, 1);
+      border-radius: 12px;
+      padding: 20px;
+}
+
+.modal-header .btn-close{
+    border: 2px solid red;
+    border-radius: 50%;
+    padding: 8px;
+    filter: invert(28%) sepia(98%) saturate(7485%) hue-rotate(357deg) brightness(97%) contrast(115%);
+    width:6px;
+    height: 6px;
+
+ 
+}
+
+.modal-padding{
+    padding: 60px;
+}
