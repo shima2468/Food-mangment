@@ -10,6 +10,7 @@
 
 .sidebar-cont .ps-sidebar-container{
     background-color:rgba(31, 38, 62, 1) ;
+    /* position: fixed; */
     height: 100vh ;
     border-top-right-radius: 60px;
 }
@@ -39,7 +40,7 @@
     border-radius: 12px;
 }
 .navbar-bg{
-    background-color: rgba(240, 255, 239, 1);
+    background-color: rgba(248, 249, 251, 1);
      border-radius: 12px;
 }
 
@@ -63,3 +64,57 @@
 .modal-padding{
     padding: 60px;
 }
+
+.sr-only{
+    position: absolute;
+width: 1px;
+height: 1px;
+padding: 0;
+margin: -1px;
+overflow: hidden;
+clip: rect(0, 0, 0, 0);
+white-space: nowrap;
+border-width: 0;
+}
+
+
+.item-img{
+    width:50px;
+    border-radius: 50%;
+}
+
+.recipes-header{
+    background-color: rgba(240, 255, 239, 1);
+}
+
+
+.upload-box {
+  border: 2px dashed #28a745;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  text-align: center;
+  color: #28a745;
+  background-color: #f8f9fa;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.upload-box:hover {
+  background-color: #e6f4ec;
+}
+
+.NotFoundImg{
+    width:87%;
+}
+
+.recipe-image {
+  max-height: 200px;
+  object-fit: cover;
+  border-radius: 15px;
+}
+
+.close-btn {
+  width: 32px;
+  height: 32px;
+}
+

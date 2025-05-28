@@ -4,6 +4,9 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import axios from 'axios'
 import { toast, ToastContainer } from 'react-toastify'
+import { axiosInstance, USERS_URLS } from '../../../../Services/url'
+import { EMAIL_VALIDATION } from '../../../../Services/vaildition'
+import { PASSWORD_VALIDATION } from '../../../../Services/vaildition'
 
 export default function Login({SaveLoginData}) {
   
@@ -21,18 +24,20 @@ export default function Login({SaveLoginData}) {
        console.log(data);
       //  api integration
       try{
-          let response =await axios.post("https://upskilling-egypt.com:3006/api/v1/Users/Login",data)
+          let response =await axiosInstance.post(USERS_URLS.LOGIN,data)
           console.log(response);
           toast.success('You have successfully logged in ✅');
           localStorage.setItem('token',response.data.token);
           SaveLoginData();
           Navigate('/dashboard')
         }catch (error){
-          toast.error('Login failed ❌');
-          console.log(error)
+          toast.error(error?.response?.data.message || "login failed");
+          console.log(error.response.data.message)
       }
   }
   return (
+     <>
+    
      <div className="col-md-5 bg-light px-5 py-4 rounded-3">
           <div className="">
                 <div className="logo-container text-center">
@@ -53,13 +58,7 @@ export default function Login({SaveLoginData}) {
                                 {/* هنا بيحضر داتا للباك لانو الباك هو الي هياخد الداتا*/}
                                 {/* الميل هو الي هينبعت للباك */}
                                 {/*الي حكالي انو اسمها ايميل هو الريكوست بادي الي جاي من الباك */}
-                                <input {...register('email',{
-                                   required:'field is required',
-                                    pattern: {
-                                        value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                                         message: 'Email not valid , please enter valid email'
-                                   }
-                                })}  type="text" className="form-control" placeholder="Email" aria-label="Username" aria-describedby="basic-addon1"/>
+                                <input {...register('email',EMAIL_VALIDATION)}  type="text" className="form-control" placeholder="Email" aria-label="Username" aria-describedby="basic-addon1"/>
                            </div>
                            {/* الايرورز من الرياكت هوك ولازم اعرفه لاي بروبرتي */}
                            {/* بداخل السبان لازم احددله جمله الايرور الي هتطلع واي وجده فيهم*/}
@@ -68,15 +67,7 @@ export default function Login({SaveLoginData}) {
                                 <span className="input-group-text" id="basic-addon1">
                                     <i className="fa-solid fa-lock"></i>
                                 </span>
-                                <input  {...register('password',{
-                                  required :'password is required',
-                                  pattern: {
-                                      value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/,
-                                      message: 'Password must be at least 8 characters, include uppercase, lowercase, number, and special character'
-                                    }
-                          
-
-                                })} type="password" className="form-control" placeholder="Password" aria-label="Username" aria-describedby="basic-addon1"/>
+                                <input  {...register('password',PASSWORD_VALIDATION)} type="password" className="form-control" placeholder="Password" aria-label="Username" aria-describedby="basic-addon1"/>
                            </div>
                           {errors.password && <span className='text-danger'>{errors.password.message}</span>}
 
@@ -85,12 +76,14 @@ export default function Login({SaveLoginData}) {
                                 <Link to='/forget-pass' className='text-decoration-none text-danger'>Forget Password?</Link>
                            </div>
                            <button className='btn btn-success w-100'>Log In</button>
-                           <ToastContainer />
+                          
                 </form>
 
           </div>
 
      </div>
+     </>
+     
   )
 }
 

@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import axios from 'axios'
 import { toast, ToastContainer } from 'react-toastify'
+import { axiosInstance, USERS_URLS } from '../../../../Services/url'
 
 export default function Register() {
    let Navigate=useNavigate();
@@ -13,12 +14,12 @@ export default function Register() {
        console.log(data);
       //  api integration
     try {
-    let response = await axios.post("https://upskilling-egypt.com:3006/api/v1/Users/Register", data);
+    let response = await axiosInstance.post(USERS_URLS.REGESTER_USER, data);
     console.log(response);
 
     toast.success('تم تسجيل الدخول بنجاح ✅');
     setTimeout(() => {
-      Navigate('/dashboard');
+      Navigate('/verify-account');
     }, 2000); // عشان المستخدم يشوف التنبيه
   } catch (error){
           toast.error('فشل تسجيل الدخول ❌');
@@ -89,7 +90,7 @@ export default function Register() {
                                                value: /^01[0125][0-9]{8}$/,
                                                message: "Phone number must start with 010, 011, 012, or 015 and contain exactly 11 digits"
                                          }
-                                      })}  type="phone" className="form-control" placeholder="Email" aria-label="Username" aria-describedby="basic-addon1"/>
+                                      })}  type="phone" className="form-control" placeholder="phone" aria-label="Username" aria-describedby="basic-addon1"/>
                                       </div>
                                       
                                 </div>
@@ -142,7 +143,7 @@ export default function Register() {
       
                                 
                                  <div className="d-flex justify-content-center pt-4">
-                                           <button className="btn btn-success w-50">Reset Password</button>
+                                           <button className="btn btn-success w-50">Register</button>
                                  </div>
                                  <ToastContainer />
                       </form>

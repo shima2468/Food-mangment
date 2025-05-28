@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import axios from 'axios'
 import { toast, ToastContainer } from 'react-toastify'
+import { axiosInstance, USERS_URLS } from '../../../../Services/url'
 
 export default function VerifyAccount() {
    let Navigate=useNavigate();
@@ -13,13 +14,12 @@ export default function VerifyAccount() {
        console.log(data);
       //  api integration
     try {
-    let response = await axios.put("https://upskilling-egypt.com:3006/api/v1/Users/verify", data);
+    let response = await axiosInstance.put(USERS_URLS.VERIFY_ACCOUNT, data);
     console.log(response);
-
     toast.success('تم تسجيل الدخول بنجاح ✅');
     setTimeout(() => {
       Navigate('/dashboard');
-    }, 2000); // عشان المستخدم يشوف التنبيه
+    }, 2000); 
   } catch (error){
           toast.error('فشل تسجيل الدخول ❌');
           console.log(error)

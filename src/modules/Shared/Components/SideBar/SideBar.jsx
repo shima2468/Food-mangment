@@ -9,16 +9,19 @@ export default function SideBar() {
    }
   return (
     <>
-    <div className="sidebar-cont">
+   <div className=" position-sticky top-0  vh-100  sidebar-cont">
+
           <Sidebar collapsed={isCollapsable}>
                <Menu>
-                  <MenuItem onClick={ToggelCollapse} className='my-5 w-100 sidebar-logo'><img src={dashboardLogo} alt="" /></MenuItem>
+                  <MenuItem onClick={ToggelCollapse} className='my-5 sidebar-logo'>
+                  <img src={dashboardLogo} alt="" className={`cursor-pointer ${isCollapsable? "w-100":"w-75"}`}/>
+                  </MenuItem>
                   <MenuItem icon={<i className=' fa fa-home'></i>} component={<Link to="/dashboard" />}> Home </MenuItem>
                   <MenuItem icon={<i className=' fa fa-users'></i>} component={<Link to="/dashboard/users" />}> Users </MenuItem>
                   <MenuItem  icon={<i class="fa-solid fa-bowl-food"></i>} component={<Link to="/dashboard/recipes" />}> Recipes </MenuItem>
                   <MenuItem  icon={<i className="fas fa-utensils me-2"></i>} component={<Link to="/dashboard/categories" />}> Categories </MenuItem>
                   <MenuItem  icon={<i class="fa-solid fa-unlock-keyhole"></i>}> change password </MenuItem>
-                  <MenuItem  icon={<i class="fa-solid fa-right-from-bracket"></i>}> LogOut </MenuItem>
+                  <MenuItem  icon={<i class="fa-solid fa-right-from-bracket"></i>} component={<Link to="/dashboard/LogOut" />}> LogOut </MenuItem>
               </Menu>
          </Sidebar>
     </div>

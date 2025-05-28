@@ -1,0 +1,16 @@
+export const EMAIL_VALIDATION ={
+   required:'field is required',
+   pattern: {
+   value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+   message: 'Email not valid , please enter valid email'
+  }
+   
+}
+
+export const PASSWORD_VALIDATION={
+    required :'password is required',
+     pattern: {
+     value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/,
+     message: 'Password must be at least 8 characters, include uppercase, lowercase, number, and special character'
+    }
+}

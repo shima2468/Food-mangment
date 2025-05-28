@@ -4,24 +4,26 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import axios from 'axios'
 import { toast, ToastContainer } from 'react-toastify'
+import { axiosInstance, USERS_URLS } from '../../../../Services/url'
+import { EMAIL_VALIDATION } from '../../../../Services/vaildition'
 
 export default function ForgetPass() {
    let Navigate=useNavigate();
-   let {register,formState:{errors},handleSubmit} = useForm()
+   let {register,formState:{errors , isSubmitting},handleSubmit} = useForm()
 
   const onSubmit =async(data)=>{
        console.log(data);
       //  api integration
     try {
-    let response = await axios.post("https://upskilling-egypt.com:3006/api/v1/Users/Reset/Request", data);
+    let response = await axiosInstance.post(USERS_URLS.FORGET_PASS, data);
     console.log(response);
-
     toast.success('Your request is being processed, please check your email ✅');
     setTimeout(() => {
-      Navigate('/reset-pass');
+     // state شو بدك تبعت لما تحوله ع الريسيت باسورد
+      Navigate('/reset-pass',{state:data.email});
     }, 2000); // عشان المستخدم يشوف التنبيه
   } catch (error){
-          toast.error('فشل تسجيل الدخول ❌');
+          toast.error(error.response.data.message);
           console.log(error)
       }
   }
@@ -46,18 +48,13 @@ export default function ForgetPass() {
                                 {/* هنا بيحضر داتا للباك لانو الباك هو الي هياخد الداتا*/}
                                 {/* الميل هو الي هينبعت للباك */}
                                 {/*الي حكالي انو اسمها ايميل هو الريكوست بادي الي جاي من الباك */}
-                                <input {...register('email',{
-                                   required:'field is required',
-                                    pattern: {
-                                        value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                                         message: 'Email not valid , please enter valid email'
-                                   }
-                                })}  type="text" className="form-control" placeholder="Email" aria-label="Username" aria-describedby="basic-addon1"/>
+                                <input {...register('email',EMAIL_VALIDATION
+                                   )}  type="text" className="form-control" placeholder="Email" aria-label="Username" aria-describedby="basic-addon1"/>
                            </div>
                            {/* الايرورز من الرياكت هوك ولازم اعرفه لاي بروبرتي */}
                            {/* بداخل السبان لازم احددله جمله الايرور الي هتطلع واي وجده فيهم*/}
                           {errors.email && <span className='text-danger'>{errors.email.message}</span>}
-                           <button className='btn btn-success w-100 mt-2'>Submit</button>
+                           <button disabled={isSubmitting} className='btn btn-success w-100 mt-2'>{isSubmitting?"submitting...":"submit"}</button>
                            <ToastContainer />
                 </form>
 
