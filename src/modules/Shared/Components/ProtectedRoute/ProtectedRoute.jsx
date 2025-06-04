@@ -1,9 +1,10 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Navigate } from 'react-router-dom';
+import { AuthContext } from '../../../../Context/AuthContext';
 
-export default function ProtectedRoute({loginData,children}) {
+export default function ProtectedRoute({children}) {
+     let {loginData,saveLoginData}=useContext(AuthContext)
     if(localStorage.getItem('token')||loginData) return children;
-    // بتستخدم في الكلاس كمبوننت مش فالفنكشن كمبوننت 
     else return <Navigate to='/Log-in'/>;
 }
  

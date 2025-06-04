@@ -3,7 +3,7 @@ import NoDataImg from "../../../../assets/images/NoData.png"
 export default function DeletConiformation({deletitem}) {
   return (
       <>
-                <div   className="d-flex flex-column justify-content-center align-items-center " style={{ height: '390px' }} >
+                <div   className="d-flex flex-column justify-content-center align-items-center mt-5 " style={{ height: '390px' }} >
                                          
                              <img src={NoDataImg} alt="" />
                               <h5 className='my-2'>Delete this {}?</h5>

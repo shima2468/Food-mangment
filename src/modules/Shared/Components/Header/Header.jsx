@@ -1,5 +1,7 @@
-import React from 'react'
-export default function Header({titel,description,imgPath,loginData}) {
+import React, { useContext } from 'react'
+import { AuthContext } from '../../../../Context/AuthContext'
+export default function Header({titel,description,imgPath}) {
+      let {loginData,saveLoginData}=useContext(AuthContext)
   return (
     <>
      <div className="container-fluid header-bg px-5">

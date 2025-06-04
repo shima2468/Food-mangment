@@ -63,10 +63,10 @@ export default function VerifyAccount() {
                                            </span>
                                            <input  {...register('code',{
                                              required :'OTP is required',
-                                             pattern: {
-                                                   value: /^[0-9]{4}$/,
-                                                    message: 'OTP code must consist of 6 digits only'
-                                             }
+                                             // pattern: {
+                                             //       value: /^[0-9]{4}$/,
+                                             //        message: 'OTP code must consist of 6 digits only'
+                                             // }
                                      
            
                                            })} type="text" className="form-control" placeholder="OTP" aria-label="Username" aria-describedby="basic-addon1"/>

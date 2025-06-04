@@ -10,7 +10,7 @@ export const EMAIL_VALIDATION ={
 export const PASSWORD_VALIDATION={
     required :'password is required',
      pattern: {
-     value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/,
+     value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{6,}$/,
      message: 'Password must be at least 8 characters, include uppercase, lowercase, number, and special character'
     }
 }

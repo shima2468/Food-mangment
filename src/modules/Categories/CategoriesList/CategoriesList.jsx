@@ -11,7 +11,7 @@ import { useForm } from "react-hook-form";
 import { toast, ToastContainer } from "react-toastify";
 import { axiosInstance, CATEGORIES_URLS } from "../../../Services/url.js";
 
-export default function CategoriesList({ loginData }) {
+export default function CategoriesList() {
   const [categoriesList, setCategoriesList] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [show, setShow] = useState(false);
@@ -19,6 +19,9 @@ export default function CategoriesList({ loginData }) {
   const [currentCategory, setCurrentCategory] = useState(null);
   const [CategoryId, setCategoryId] = useState(0);
   const [showDelete, setShowDelete] = useState(false);
+  const [SearchInput, setSearchInput] = useState("");
+  const [ArrayOfPages, setArrayOfPages] = useState()
+  const [NameValue, setNameValue] = useState("");
   const {
     register,
     setValue,
@@ -62,70 +65,61 @@ export default function CategoriesList({ loginData }) {
     ViewCategoryDetails(CategoryDetails);
   };
 
-  const getCategoryList = async (pageSize,pageNumber) => {
+  const getCategoryList = async (pageSize,pageNumber,name) => {
     try {
-      let response = await axiosInstance.get(CATEGORIES_URLS.GET_CATEGORIES,{params:{pageSize,pageNumber}});
-      setCategoriesList(response?.data?.data)
+      let response = await axiosInstance.get(CATEGORIES_URLS.GET_CATEGORIES,{params:{pageSize,pageNumber,name}});
+      console.log(response);
+      
+      setCategoriesList(response?.data?.data);
+      setArrayOfPages(Array(response.data.totalNumberOfPages).fill().map((_, i) => i + 1))
+      toast.success(response?.data?.message);
+      setIsLoading(false);
     } catch (error) {
-      toast.error("حدث خطأ أثناء جلب البيانات");
-      console.log(error);
-    } finally {
+      toast.error(response?.error?.message);
       setIsLoading(false);
     }
   };
 
   const createCategory = async (data) => {
     try {
-      let response = await axiosInstance
-      .post(
-        "https://upskilling-egypt.com:3006/api/v1/Category/",
-        data,
-        {
-          headers: {
-            Authorization: localStorage.getItem("token"),
-          },
-        }
+      let response = await axiosInstance.post(
+              CATEGORIES_URLS.ADD_CATEGORIES,data
       );
-      toast.success("✅ تم إضافة التصنيف بنجاح");
+      console.log(response);
+      
+      toast.success(response?.data?.message || "The category has been added successfully.");
       getCategoryList();
       handleClose();
     } catch (error) {
-      toast.error("❌ فشل في إضافة التصنيف");
+      toast.error(response?.error?.message || "Failed to add category"); 
       console.log(error);
     }
   };
 
   const editCategory = async (data) => {
     try {
-      const response = await axiosInstance.put(
-        `https://upskilling-egypt.com:3006/api/v1/Category/${currentCategory.id}`,
-        { name: data.name },
-        {
-          headers: {
-            Authorization: localStorage.getItem("token"),
-          },
-        }
+      const response = await axiosInstance.put( CATEGORIES_URLS.EDIT_CATEGORIES(currentCategory.id)
+        ,{ name: data.name },
+        
       );
-      toast.success("✏️ تم تعديل التصنيف بنجاح");
+     toast.success(response?.data?.message || "The category has been Updated successfully.");
       getCategoryList();
       handleClose();
     } catch (error) {
-      toast.error("❌ فشل في تعديل التصنيف");
+      toast.error(response?.error?.message || "Failed to update category"); 
       console.log(error);
     }
   };
 
   const ViewCategoryDetails = async (CategoryDetails) => {
     try {
-      let response = await axiosInstance.get(
-        `https://upskilling-egypt.com:3006/api/v1/Category/${CategoryDetails.id}}`,
-        {
-          headers: localStorage.getItem("token"),
-        }
-      );
+      let response = await axiosInstance.get(CATEGORIES_URLS.VIEW_CATEGORY(CategoryDetails.id) );
       console.log(response.data);
       setCategoryDetails(response?.data);
-    } catch (error) {}
+       toast.success(response?.data?.message || "The category has been viewed successfully.");
+    } catch (error) {
+      toast.error(response?.error?.message || "Failed to view category"); 
+    }
   };
   const onSubmit = (data) => {
     if (isEditMode) {
@@ -138,18 +132,26 @@ export default function CategoriesList({ loginData }) {
   const deleteCategory = async () => {
     try {
       let response=await axiosInstance.delete(CATEGORIES_URLS.DELETE_CATEGORY(CategoryId));
-      toast.success("🗑️ تم حذف التصنيف بنجاح");
+      toast.success(response?.data?.message || "The category has been deleted successfully.");
       getCategoryList();
       handleCloseDelete();
     } catch (error) {
-      toast.error("❌ فشل في حذف التصنيف");
+      toast.error(response?.error?.message || "Failed to view category"); 
       console.log(error);
     }
   };
+  
+ const getNameValue=(input)=>{
+      setNameValue(input.target.value);
+      getCategoryList(4,1,input.target.value);
+  }
+
 
   useEffect(() => {
-    getCategoryList(5,1);
-  }, [getCategoryList]);
+    getCategoryList(3,1,NameValue);
+  }, []);
+  
+
 
   return (
     <>
@@ -160,7 +162,7 @@ export default function CategoriesList({ loginData }) {
           "You can now add your items that any user can order it from the Application and you can edit"
         }
         imgPath={headerImg}
-        loginData={loginData}
+        
       />
 
       <div className="home-content mx-4 p-2 mt-4 ">
@@ -173,6 +175,23 @@ export default function CategoriesList({ loginData }) {
             <button className="btn btn-success" onClick={handleShow}>
               Add New Category
             </button>
+          </div>
+        </div>
+        <div className="ActionAboveTable mt-3">
+          <div className="row d-flex">
+            <div className="col-md-12 input-group   border rounded-3 text-muted">
+              <span className="input-group-text bg-white border-light fs-6">
+                <i className="fa-solid fa-search"></i>
+              </span>
+              <input
+                type="text"
+                className="form-control border-light fs-6"
+                placeholder="Search here By Name..."
+                onChange={(e) => getNameValue(e)}
+              />
+            </div>
+            
+            
           </div>
         </div>
 
@@ -196,7 +215,9 @@ export default function CategoriesList({ loginData }) {
 ) : (
   <tbody>
     {categoriesList.length > 0 ? (
-      categoriesList.map((item, index) => (
+      <>
+             {categoriesList.map((item, index) => (
+        
         <tr key={index}>
           <td>{item.name}</td>
           <td className="text-center">
@@ -206,21 +227,85 @@ export default function CategoriesList({ loginData }) {
             {new Date(item.modificationDate).toLocaleString()}
           </td>
           <td className="text-center">
-            <i
-              className="fa fa-eye"
-              onClick={() => handleShowCategoryDetails(item)}
-            ></i>
-            <i
-              className="fa fa-edit mx-2 text-warning"
-              onClick={() => handleShowEdit(item)}
-            ></i>
-            <i
-              className="fa fa-trash text-danger"
-              onClick={() => handleShowDelete(item.id)}
-            ></i>
-          </td>
+  <div className="dropdown">
+    <button
+      className="btn p-0 border-0 bg-transparent"
+      type="button"
+      data-bs-toggle="dropdown"
+      aria-expanded="false"
+    >
+      <i className="fa fa-ellipsis fs-5 text-secondary"></i>
+    </button>
+    <ul className="dropdown-menu shadow">
+      <li>
+        <button
+          className="dropdown-item d-flex align-items-center gap-2 text-success"
+          onClick={() => handleShowCategoryDetails(item)}
+        >
+          <i className="fa fa-eye text-success"></i> View
+        </button>
+      </li>
+      <li>
+        <button
+          className="dropdown-item d-flex align-items-center gap-2 text-success"
+          onClick={() => handleShowEdit(item)}
+        >
+          <i className="fa fa-pen text-primary text-success"></i> Edit
+        </button>
+      </li>
+      <li>
+        <button
+          className="dropdown-item d-flex align-items-center gap-2  text-success"
+          onClick={() => handleShowDelete(item.id)}
+        >
+          <i className="fa fa-trash text-success"></i> Delete
+        </button>
+      </li>
+    </ul>
+  </div>
+</td>
+
         </tr>
-      ))
+      )
+      
+    
+           )}
+  <div className="d-flex mt-3 w-100 bg-red">
+  <nav aria-label="Page navigation">
+    <ul className="pagination">
+      <li className="page-item">
+        <a className="page-link text-success" href="#" aria-label="Previous">
+          <span aria-hidden="true">&laquo;</span>
+        </a>
+      </li>
+
+      {ArrayOfPages.map((pageNu) => (
+        <li
+          key={pageNu}
+          onClick={() => getCategoryList(3, pageNu)}
+          className="page-item"
+        >
+          <a className="page-link text-success" href="#">
+            {pageNu}
+          </a>
+        </li>
+      ))}
+
+      <li className="page-item">
+        <a className="page-link text-success" href="#" aria-label="Next">
+          <span aria-hidden="true">&raquo;</span>
+        </a>
+      </li>
+    </ul>
+  </nav>
+</div>
+
+
+      
+      </>
+    
+    
+    
     ) : (
       <tr>
         <td colSpan="4">
@@ -228,6 +313,7 @@ export default function CategoriesList({ loginData }) {
         </td>
       </tr>
     )}
+
   </tbody>
 )}
 

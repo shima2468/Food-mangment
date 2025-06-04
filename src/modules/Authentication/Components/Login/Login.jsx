@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import logo from "../../../../assets/images/logo.png"
 import { Link, useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
@@ -7,10 +7,11 @@ import { toast, ToastContainer } from 'react-toastify'
 import { axiosInstance, USERS_URLS } from '../../../../Services/url'
 import { EMAIL_VALIDATION } from '../../../../Services/vaildition'
 import { PASSWORD_VALIDATION } from '../../../../Services/vaildition'
+import { AuthContext } from '../../../../Context/AuthContext'
 
-export default function Login({SaveLoginData}) {
+export default function Login() {
   
-  let Navigate=useNavigate();
+
   // useForm هي الهوك الي بيقول للكمبوننت اني بشتغل بالرياكت هوك
   // الفورم هي الداتا الي بتعامل معاها + الجزء تاع الفلديشن +الجزء تاع ال api
   // register هيشيل الداتا تعت الفورم وهي بتشيلها اليوز فورم
@@ -18,7 +19,8 @@ export default function Login({SaveLoginData}) {
   // handelsumbit هي الفنكشن الي الفورم هتنربط فيها لما اعمل سبمت
   // (1)
   let {register,formState:{errors},handleSubmit} = useForm()
-
+  let {saveLoginData}=useContext(AuthContext)
+  let navigate =useNavigate();
   // (2)
   const onSubmit =async(data)=>{
        console.log(data);
@@ -28,13 +30,15 @@ export default function Login({SaveLoginData}) {
           console.log(response);
           toast.success('You have successfully logged in ✅');
           localStorage.setItem('token',response.data.token);
-          SaveLoginData();
-          Navigate('/dashboard')
+          saveLoginData();
+          navigate('/dashboard')
         }catch (error){
-          toast.error(error?.response?.data.message || "login failed");
-          console.log(error.response.data.message)
+          toast.error(response?.error.message || "login failed");
+          
       }
   }
+
+  
   return (
      <>
     

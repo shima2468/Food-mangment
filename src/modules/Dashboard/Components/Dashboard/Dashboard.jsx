@@ -1,8 +1,11 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import Header from '../../../Shared/Components/Header/Header'
 import headerImg from '../../../../assets/images/HeaderImg1.png'
-export default function Dashboard({loginData}) {
+import { AuthContext } from '../../../../Context/AuthContext'
+export default function Dashboard() {
+        let {loginData,saveLoginData}=useContext(AuthContext)
   return (
+
     <>
        <Header titel={'welcom'} description={'This is a welcoming screen for the entry of the application, you can now see the options'} imgPath={headerImg} loginData={loginData}/>
        <div className="home-content mx-4 p-2 mt-4 ">

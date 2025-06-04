@@ -25,28 +25,10 @@ import { jwtDecode } from "jwt-decode";
 import ProtectedRoute from "./modules/Shared/Components/ProtectedRoute/ProtectedRoute";
 import { ToastContainer } from "react-toastify";
 import LogOut from "./modules/Authentication/Components/LogOut/LogOut";
+import ChangePass from "./modules/Authentication/Components/Change-pass/ChangePass";
 
 function App() {
-  // هو عبارة عن الاوبجكت الي هيحمل فيه
-  // الاوبجكت الي نتج عن فك تشفير التوكن
-
-  const [loginData, SetLoginData] = useState(null);
-  console.log(loginData);
-  let saveLoginData = () => {
-    let encodeToken = localStorage.getItem("token");
-    let DecodeToken = jwtDecode(encodeToken);
-    SetLoginData(DecodeToken);
-    console.log(encodeToken);
-    console.log(DecodeToken);
-    console.log(loginData);
-  };
-  useEffect(() => {
-    if (localStorage.getItem("token")) {
-      // لو التوكين معاك موجود جوا
-      //هروح اعمل كول لهالفنكش  الي هتملى اللوق ان داتا
-      saveLoginData();
-    }
-  }, []);
+  
   // the first side from Route
   const routes = createBrowserRouter([
     // 2 main Layout
@@ -58,8 +40,8 @@ function App() {
       children: [
         // لما يكون الباث فاضي هي اول حاجه هتطلع لو كنا داخل الاب الاوث
         // الديفولت لو انا Auth
-        { index: true, element: <Login SaveLoginData={saveLoginData} /> },
-        { path: "Log-in", element: <Login SaveLoginData={saveLoginData} /> },
+        { index: true, element: <Login /> },
+        { path: "Log-in", element: <Login/> },
         { path: "register", element: <Register /> },
         { path: "reset-pass", element: <ResetPass /> },
         { path: "forget-pass", element: <ForgetPass /> },
@@ -72,24 +54,25 @@ function App() {
     {
       path: "/dashboard",
       element: (
-        <ProtectedRoute loginData={loginData}>
-          {" "}
-          <MasterLayout loginData={loginData} />{" "}
+        <ProtectedRoute >
+         
+          <MasterLayout/>
         </ProtectedRoute>
       ),
       children: [
         // Defult Rout inside MasterLayout
-        { index: true, element: <Dashboard loginData={loginData} /> },
+        { index: true, element: <Dashboard /> },
         { path: "recipes", element: <RecipesList /> },
         { path: "recipe-Data", element: <RecipeData /> },
         {
           path: "categories",
-          element: <CategoriesList loginData={loginData} />,
+          element: <CategoriesList/>,
         },
         { path: "category-Data", element: <CategoryData /> },
         { path: "users", element: <UsersList /> },
         { path: "fav", element: <FavList /> },
         { path: "logout", element: <LogOut /> },
+        { path: "change-pass", element: <ChangePass/> },
       ],
       errorElement: <NotFound />,
     },

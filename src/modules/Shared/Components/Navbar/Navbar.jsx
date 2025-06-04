@@ -1,6 +1,8 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import profilePhoto from "../../../../assets/images/profile.png"
-export default function Navbar({loginData}) {
+import { AuthContext } from '../../../../Context/AuthContext'
+export default function Navbar() {
+  let {loginData,saveLoginData}=useContext(AuthContext)
   return (
     <>
    <nav className="navbar navbar-expand-lg">
