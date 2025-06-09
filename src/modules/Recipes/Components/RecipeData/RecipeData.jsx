@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import fallback from "../../../../assets/images/images.jpeg"
 import {
   axiosInstance,
   baseImg,
@@ -8,15 +9,16 @@ import {
   TAG_URL,
 } from "../../../../Services/url";
 import { toast } from "react-toastify";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 export default function RecipeData() {
   const {
     register,
-    formState: { errors },
+    formState: { errors , isSubmitting},
     handleSubmit,
     reset,
     setValue,
+     
   } = useForm();
 
   const [TagList, setTagList] = useState([]);
@@ -134,18 +136,18 @@ export default function RecipeData() {
             </p>
           </div>
           <div className="col-md-4 d-flex justify-content-end">
-            <button
+            <Link
               onClick={() => navigate("/dashboard/recipes")}
               className="btn btn-success px-5"
             >
               All Recipes <i className="fa-solid fa-arrow-right ms-2"></i>
-            </button>
+            </Link>
           </div>
         </div>
       </div>
     <div className="p-4 w-75 m-auto">
       <h5 className="my-4 text-muted">
-        {mode === "Add" ? "Add New Recipe" : "Edit Recipe"}
+         {mode === "Add" ? "Add New Recipe" : "Edit Recipe"}
       </h5>
 
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -177,7 +179,8 @@ export default function RecipeData() {
             type="number"
             className="form-control"
             placeholder="Recipe Price"
-            {...register("price", { required: "Price is Required" })}
+            {...register("price", {required: "Price is Required",
+               min: { value: 0, message: "Price cannot be negative" } })}
           />
         </div>
 
@@ -211,7 +214,15 @@ export default function RecipeData() {
           style={{ cursor: "pointer" }}
         >
           <i className="fa-solid fa-upload"></i>
-          <div className="div"> {mode == "update"? <img className="item-img" src={`${baseImg}${RecipeDataDetails.imagePath}`} alt=""/>:"" }</div>
+          <div className="div"> {mode == "update"?<img
+                    className="item-img"
+                    src={
+                     
+                         `${baseImg}${RecipeDataDetails.imagePath}`
+                       
+                    }
+                    alt="recipe"
+                  />:"" }</div>
           
           <p className="text-secondary">
             Drag & Drop or
@@ -229,13 +240,13 @@ export default function RecipeData() {
         <div className="d-flex justify-content-end mt-5 gap-4">
           <button
             type="button"
-            className="btn btn-outline-success px-5"
+            className="btn btn-outline-success px-5 btn-icon"
             onClick={() => navigate("/dashboard/recipes")}
           >
             Cancel
           </button>
-          <button type="submit" className="btn btn-success px-3">
-            Save
+          <button type="submit" className="btn btn-success px-3 btn-icon" disabled={isSubmitting}>
+                {isSubmitting? "submitting...." : "Save"} 
           </button>
         </div>
       </form>

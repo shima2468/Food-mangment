@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import Header from "../../../Shared/Components/Header/Header";
 import { toast, ToastContainer } from "react-toastify";
 import headerImg from "../../../../assets/images/HeaderImg.png";
+import fallback from "../../../../assets/images/images.jpeg"
 import {
   axiosInstance,
   baseImg,
@@ -174,9 +175,9 @@ export default function RecipesList({ IsEditMode }) {
           <div className="col-md-4 d-flex justify-content-end">
             {isAdmin?  <button
               onClick={() => navigate("/dashboard/recipe-Data", { state: { mode: "Add" } })}
-              className="btn btn-success"
+              className="btn btn-success btn-icon"
             >
-              Add New item
+              Add New Recipe
             </button>:""}
            
           </div>
@@ -252,8 +253,8 @@ export default function RecipesList({ IsEditMode }) {
                    {  RecipeList.map((item, index) => (
                   <tr key={index}>
                     <td>{item.name}</td>
-                    <td className="text-center">
-                      <img className="item-img" src={`${baseImg}${item.imagePath}`} alt="" />
+                    <td className="text-center w-25 h-25">
+                      <img className="item-img" src={item.imagePath?`${baseImg}${item.imagePath}`: fallback} alt="" />
                     </td>
                     <td className="text-center">{item.price}</td>
                     <td className="text-center">{item.description}</td>
@@ -273,7 +274,7 @@ export default function RecipesList({ IsEditMode }) {
                       </button>
                       <ul className="dropdown-menu shadow">
                         <li>
-                          <button className="dropdown-item d-flex align-items-center gap-2 text-success" onClick={() => handleShowRecipeDetails(item)}>
+                          <button className="dropdown-item d-flex align-items-center gap-2 text-success btn-icon" onClick={() => handleShowRecipeDetails(item)}>
                             <i className="fa fa-eye text-success"></i> View
                           </button>
                         </li>

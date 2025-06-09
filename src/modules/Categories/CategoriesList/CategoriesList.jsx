@@ -20,12 +20,12 @@ export default function CategoriesList() {
   const [CategoryId, setCategoryId] = useState(0);
   const [showDelete, setShowDelete] = useState(false);
   const [SearchInput, setSearchInput] = useState("");
-  const [ArrayOfPages, setArrayOfPages] = useState()
+  const [ArrayOfPages, setArrayOfPages] = useState();
   const [NameValue, setNameValue] = useState("");
   const {
     register,
     setValue,
-    formState: { errors },
+    formState: { errors, isSubmitting },
     handleSubmit,
     reset,
   } = useForm();
@@ -52,7 +52,7 @@ export default function CategoriesList() {
 
   const handleShowDelete = (id) => {
     setCategoryId(id);
-     console.log(CategoryId)
+    console.log(CategoryId);
     setShowDelete(true);
   };
   const [showCategoryDetails, setShowCategoryDetails] = useState(false);
@@ -65,13 +65,19 @@ export default function CategoriesList() {
     ViewCategoryDetails(CategoryDetails);
   };
 
-  const getCategoryList = async (pageSize,pageNumber,name) => {
+  const getCategoryList = async (pageSize, pageNumber, name) => {
     try {
-      let response = await axiosInstance.get(CATEGORIES_URLS.GET_CATEGORIES,{params:{pageSize,pageNumber,name}});
+      let response = await axiosInstance.get(CATEGORIES_URLS.GET_CATEGORIES, {
+        params: { pageSize, pageNumber, name },
+      });
       console.log(response);
-      
+
       setCategoriesList(response?.data?.data);
-      setArrayOfPages(Array(response.data.totalNumberOfPages).fill().map((_, i) => i + 1))
+      setArrayOfPages(
+        Array(response.data.totalNumberOfPages)
+          .fill()
+          .map((_, i) => i + 1)
+      );
       toast.success(response?.data?.message);
       setIsLoading(false);
     } catch (error) {
@@ -83,42 +89,51 @@ export default function CategoriesList() {
   const createCategory = async (data) => {
     try {
       let response = await axiosInstance.post(
-              CATEGORIES_URLS.ADD_CATEGORIES,data
+        CATEGORIES_URLS.ADD_CATEGORIES,
+        data
       );
       console.log(response);
-      
-      toast.success(response?.data?.message || "The category has been added successfully.");
+
+      toast.success(
+        response?.data?.message || "The category has been added successfully."
+      );
       getCategoryList();
       handleClose();
     } catch (error) {
-      toast.error(response?.error?.message || "Failed to add category"); 
+      toast.error(response?.error?.message || "Failed to add category");
       console.log(error);
     }
   };
 
   const editCategory = async (data) => {
     try {
-      const response = await axiosInstance.put( CATEGORIES_URLS.EDIT_CATEGORIES(currentCategory.id)
-        ,{ name: data.name },
-        
+      const response = await axiosInstance.put(
+        CATEGORIES_URLS.EDIT_CATEGORIES(currentCategory.id),
+        { name: data.name }
       );
-     toast.success(response?.data?.message || "The category has been Updated successfully.");
+      toast.success(
+        response?.data?.message || "The category has been Updated successfully."
+      );
       getCategoryList();
       handleClose();
     } catch (error) {
-      toast.error(response?.error?.message || "Failed to update category"); 
+      toast.error(response?.error?.message || "Failed to update category");
       console.log(error);
     }
   };
 
   const ViewCategoryDetails = async (CategoryDetails) => {
     try {
-      let response = await axiosInstance.get(CATEGORIES_URLS.VIEW_CATEGORY(CategoryDetails.id) );
+      let response = await axiosInstance.get(
+        CATEGORIES_URLS.VIEW_CATEGORY(CategoryDetails.id)
+      );
       console.log(response.data);
       setCategoryDetails(response?.data);
-       toast.success(response?.data?.message || "The category has been viewed successfully.");
+      toast.success(
+        response?.data?.message || "The category has been viewed successfully."
+      );
     } catch (error) {
-      toast.error(response?.error?.message || "Failed to view category"); 
+      toast.error(response?.error?.message || "Failed to view category");
     }
   };
   const onSubmit = (data) => {
@@ -131,38 +146,38 @@ export default function CategoriesList() {
 
   const deleteCategory = async () => {
     try {
-      let response=await axiosInstance.delete(CATEGORIES_URLS.DELETE_CATEGORY(CategoryId));
-      toast.success(response?.data?.message || "The category has been deleted successfully.");
+      let response = await axiosInstance.delete(
+        CATEGORIES_URLS.DELETE_CATEGORY(CategoryId)
+      );
+      toast.success(
+        response?.data?.message || "The category has been deleted successfully."
+      );
       getCategoryList();
       handleCloseDelete();
     } catch (error) {
-      toast.error(response?.error?.message || "Failed to view category"); 
+      toast.error(response?.error?.message || "Failed to view category");
       console.log(error);
     }
   };
-  
- const getNameValue=(input)=>{
-      setNameValue(input.target.value);
-      getCategoryList(4,1,input.target.value);
-  }
 
+  const getNameValue = (input) => {
+    setNameValue(input.target.value);
+    getCategoryList(4, 1, input.target.value);
+  };
 
   useEffect(() => {
-    getCategoryList(3,1,NameValue);
+    getCategoryList(3, 1, NameValue);
   }, []);
-  
-
 
   return (
     <>
-      <ToastContainer/>
+      <ToastContainer />
       <Header
         titel={"Categories items"}
         description={
           "You can now add your items that any user can order it from the Application and you can edit"
         }
         imgPath={headerImg}
-        
       />
 
       <div className="home-content mx-4 p-2 mt-4 ">
@@ -190,8 +205,6 @@ export default function CategoriesList() {
                 onChange={(e) => getNameValue(e)}
               />
             </div>
-            
-            
           </div>
         </div>
 
@@ -211,113 +224,109 @@ export default function CategoriesList() {
             </tr>
           </thead>
           {isLoading ? (
-  <Loading />
-) : (
-  <tbody>
-    {categoriesList.length > 0 ? (
-      <>
-             {categoriesList.map((item, index) => (
-        
-        <tr key={index}>
-          <td>{item.name}</td>
-          <td className="text-center">
-            {new Date(item.creationDate).toLocaleString()}
-          </td>
-          <td className="text-center">
-            {new Date(item.modificationDate).toLocaleString()}
-          </td>
-          <td className="text-center">
-  <div className="dropdown">
-    <button
-      className="btn p-0 border-0 bg-transparent"
-      type="button"
-      data-bs-toggle="dropdown"
-      aria-expanded="false"
-    >
-      <i className="fa fa-ellipsis fs-5 text-secondary"></i>
-    </button>
-    <ul className="dropdown-menu shadow">
-      <li>
-        <button
-          className="dropdown-item d-flex align-items-center gap-2 text-success"
-          onClick={() => handleShowCategoryDetails(item)}
-        >
-          <i className="fa fa-eye text-success"></i> View
-        </button>
-      </li>
-      <li>
-        <button
-          className="dropdown-item d-flex align-items-center gap-2 text-success"
-          onClick={() => handleShowEdit(item)}
-        >
-          <i className="fa fa-pen text-primary text-success"></i> Edit
-        </button>
-      </li>
-      <li>
-        <button
-          className="dropdown-item d-flex align-items-center gap-2  text-success"
-          onClick={() => handleShowDelete(item.id)}
-        >
-          <i className="fa fa-trash text-success"></i> Delete
-        </button>
-      </li>
-    </ul>
-  </div>
-</td>
+            <Loading />
+          ) : (
+            <tbody>
+              {categoriesList.length > 0 ? (
+                <>
+                  {categoriesList.map((item, index) => (
+                    <tr key={index}>
+                      <td>{item.name}</td>
+                      <td className="text-center">
+                        {new Date(item.creationDate).toLocaleString()}
+                      </td>
+                      <td className="text-center">
+                        {new Date(item.modificationDate).toLocaleString()}
+                      </td>
+                      <td className="text-center">
+                        <div className="dropdown">
+                          <button
+                            className="btn p-0 border-0 bg-transparent"
+                            type="button"
+                            data-bs-toggle="dropdown"
+                            aria-expanded="false"
+                          >
+                            <i className="fa fa-ellipsis fs-5 text-secondary"></i>
+                          </button>
+                          <ul className="dropdown-menu shadow">
+                            <li>
+                              <button
+                                className="dropdown-item d-flex align-items-center gap-2 text-success"
+                                onClick={() => handleShowCategoryDetails(item)}
+                              >
+                                <i className="fa fa-eye text-success"></i> View
+                              </button>
+                            </li>
+                            <li>
+                              <button
+                                className="dropdown-item d-flex align-items-center gap-2 text-success"
+                                onClick={() => handleShowEdit(item)}
+                              >
+                                <i className="fa fa-pen text-primary text-success"></i>{" "}
+                                Edit
+                              </button>
+                            </li>
+                            <li>
+                              <button
+                                className="dropdown-item d-flex align-items-center gap-2  text-success"
+                                onClick={() => handleShowDelete(item.id)}
+                              >
+                                <i className="fa fa-trash text-success"></i>{" "}
+                                Delete
+                              </button>
+                            </li>
+                          </ul>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                  <div className="d-flex mt-3 w-100 bg-red">
+                    <nav aria-label="Page navigation">
+                      <ul className="pagination">
+                        <li className="page-item">
+                          <a
+                            className="page-link text-success"
+                            href="#"
+                            aria-label="Previous"
+                          >
+                            <span aria-hidden="true">&laquo;</span>
+                          </a>
+                        </li>
 
-        </tr>
-      )
-      
-    
-           )}
-  <div className="d-flex mt-3 w-100 bg-red">
-  <nav aria-label="Page navigation">
-    <ul className="pagination">
-      <li className="page-item">
-        <a className="page-link text-success" href="#" aria-label="Previous">
-          <span aria-hidden="true">&laquo;</span>
-        </a>
-      </li>
+                        {ArrayOfPages.map((pageNu) => (
+                          <li
+                            key={pageNu}
+                            onClick={() => getCategoryList(3, pageNu)}
+                            className="page-item"
+                          >
+                            <a className="page-link text-success" href="#">
+                              {pageNu}
+                            </a>
+                          </li>
+                        ))}
 
-      {ArrayOfPages.map((pageNu) => (
-        <li
-          key={pageNu}
-          onClick={() => getCategoryList(3, pageNu)}
-          className="page-item"
-        >
-          <a className="page-link text-success" href="#">
-            {pageNu}
-          </a>
-        </li>
-      ))}
-
-      <li className="page-item">
-        <a className="page-link text-success" href="#" aria-label="Next">
-          <span aria-hidden="true">&raquo;</span>
-        </a>
-      </li>
-    </ul>
-  </nav>
-</div>
-
-
-      
-      </>
-    
-    
-    
-    ) : (
-      <tr>
-        <td colSpan="4">
-          <NoData />
-        </td>
-      </tr>
-    )}
-
-  </tbody>
-)}
-
-        
+                        <li className="page-item">
+                          <a
+                            className="page-link text-success"
+                            href="#"
+                            aria-label="Next"
+                          >
+                            <span aria-hidden="true">&raquo;</span>
+                          </a>
+                        </li>
+                      </ul>
+                    </nav>
+                  </div>
+                </>
+              ) : (
+                <tr>
+                  <td colSpan="4">
+                    <NoData />
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          )}
         </table>
 
         <Modal
@@ -351,9 +360,8 @@ export default function CategoriesList() {
                   isEditMode ? "btn-warning" : "btn-success"
                 }  w-100 mt-2`}
               >
-                {isEditMode ? "Edit Category" : "Add Category"}
+                {isSubmitting && isEditMode ? "Edit Category" : "Add Category"}
               </button>
-             
             </form>
           </Modal.Body>
         </Modal>
@@ -375,7 +383,6 @@ export default function CategoriesList() {
               Delete this item
             </Button>
           </Modal.Footer>
-          
         </Modal>
 
         <Modal

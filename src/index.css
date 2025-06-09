@@ -32,7 +32,7 @@
       padding: 0 !important;
 } 
 
-.header-bg{
+.header-bg {
     background-image: url('./assets/images/Headerbg.png');
     background-size: cover;
     width: 100%;
@@ -128,4 +128,17 @@ border-width: 0;
 
 .home-content{
     height: 100vh;
+}
+
+.btn-icon:focus {
+  outline: 2px solid #145523;
+  outline-offset: 4px;
+}
+
+.active-sidebar-item {
+  background-color:rgba(0, 146, 77, 0.1) !important; 
+  color: white !important;
+  font-weight: bold;
+  /* border-radius: 8px; */
+ border-left: 4px solid rgba(0, 146, 71, 1);
 }

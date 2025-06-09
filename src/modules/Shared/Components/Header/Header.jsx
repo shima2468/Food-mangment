@@ -4,7 +4,7 @@ export default function Header({titel,description,imgPath}) {
       let {loginData,saveLoginData}=useContext(AuthContext)
   return (
     <>
-     <div className="container-fluid header-bg px-5">
+     <div className="container-fluid header-bg px-5 rounded-2">
               <div className="row ">
                     <div className="col-md-8 d-flex align-items-center text-white px-5">
                           <div>

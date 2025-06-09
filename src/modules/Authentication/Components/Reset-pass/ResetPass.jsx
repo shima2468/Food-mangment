@@ -45,10 +45,10 @@ export default function ResetPass() {
   // هيروح يعمل حاجه اسمها تريقرر
   // تريقرر ايش بتعمل للكونفريم باسورد بتقلها شغلي الفالديت الي جواكي 
   if(watch("confirmPassword")){
-                 trigger("confirmPassword")
+                 trigger("confirmPassword")  //تقوم بتشغيل الـ validation يدويًا على حقل معيّن
   }
  
-  },[watch("password"),watch("confirmPassword")])
+  },[watch("password"),watch("confirmPassword")]) //يراقب تغيّر كلمة السر
   return (
        <div className="col-md-5 bg-light px-5 py-4 rounded-3">
                 <div className="">
@@ -135,7 +135,11 @@ export default function ResetPass() {
                                     )}
       
                                 
-                                 <button disabled={isSubmitting} className='btn btn-success w-100'>Reset Password</button>
+                                 <button disabled={isSubmitting} className='btn btn-success w-100 my-3'> 
+                                  
+                                  {isSubmitting?  "isSubmitting....." : "Reset Password"}
+                                  
+                                  </button>
                                  <ToastContainer />
                       </form>
       
