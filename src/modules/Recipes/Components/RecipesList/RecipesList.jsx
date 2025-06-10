@@ -134,7 +134,7 @@ export default function RecipesList({ IsEditMode }) {
                       let response=await axiosInstance.delete(FAV_RECIPE_LIST_URL.DELETE_FAV_RECIPE(recipeId));
                       setFavoriteIds((prev) => prev.filter((id) => id !== recipeId));
                       toast.success("Deleted From Favorite Successfully ")
-                      
+                       
              }else{
                           await axiosInstance.post(FAV_RECIPE_LIST_URL.ADD_FAV_RECIPES, { recipeId });
                           setFavoriteIds(prev => [...prev, recipeId]);
