@@ -6,7 +6,6 @@ import { ToastContainer } from "react-toastify";
 import "./App.css";
 import ChangePass from "./modules/Authentication/Components/Change-pass/ChangePass";
 import ForgetPass from "./modules/Authentication/Components/Forget-pass/ForgetPass";
-
 import LogOut from "./modules/Authentication/Components/LogOut/LogOut";
 import Register from "./modules/Authentication/Components/Register/Register";
 import ResetPass from "./modules/Authentication/Components/Reset-pass/ResetPass";
@@ -22,7 +21,7 @@ import MasterLayout from "./modules/Shared/Components/MasterLayout/MasterLayout"
 import NotFound from "./modules/Shared/Components/NotFound/NotFound";
 import ProtectedRoute from "./modules/Shared/Components/ProtectedRoute/ProtectedRoute";
 import UsersList from "./modules/Users/Components/UsersList/UsersList";
-import Login from "./modules/Authentication/Components/Login/login";
+import Login from "./modules/Authentication/Components/Login/Login"
 
 function App() {
   
