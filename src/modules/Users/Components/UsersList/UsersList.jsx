@@ -21,18 +21,16 @@ export default function UsersList({ loginData }) {
   const [ArrayOfPages, setArrayOfPages] = useState([]);
   const [UserState, setUserState] = useState({});
 
+  const getNameValue = (input) => {
+    setNameValue(input.target.value);
+    getUsers(4, 2, input.target.value, UserState);
+  };
 
-  const getNameValue=(input)=>{
-      setNameValue(input.target.value);
-      getUsers(4,2,input.target.value,UserState);
-  }
-const getUserState = (input) => {
-  const value = Number(input.target.value);
-  setUserState(value);
-  getUsers(4, 2, NameValue, value);
-};
-
-
+  const getUserState = (input) => {
+    const value = Number(input.target.value);
+    setUserState(value);
+    getUsers(4, 2, NameValue, value);
+  };
 
   const handleCloseDelete = () => setShowDelete(false);
   const handleCloseDetails = () => setShowDetails(false);
@@ -47,19 +45,17 @@ const getUserState = (input) => {
     setShowDetails(true);
   };
 
-  const getUsers = async (pageSize, pageNumber,name,groupId) => {
+  const getUsers = async (pageSize, pageNumber, name, groupId) => {
     try {
       const response = await axiosInstance.get(USERS_LIST_URL.GET_USERS, {
         params: {
           pageSize,
           pageNumber,
           userName: name,
-          groups: groupId ? [groupId] : undefined 
+          groups: groupId ? [groupId] : undefined,
         },
       });
-      console.log(response);
-      console.log(response.data.data[0].group);
-      
+
       setUsers(response?.data?.data);
       setArrayOfPages(
         Array.from(
@@ -67,11 +63,8 @@ const getUserState = (input) => {
           (_, i) => i + 1
         )
       );
-
-
       setIsLoading(false);
     } catch (error) {
-      // toast.error(error?.response?.data?.message || "Failed to load users");
       setIsLoading(false);
     }
   };
@@ -81,8 +74,6 @@ const getUserState = (input) => {
       let response = await axiosInstance.delete(
         USERS_LIST_URL.DELETE_USERS(userId)
       );
-      console.log(response);
-      
       toast.success(response.data.message || "User deleted successfully");
       getUsers(3, 1);
       handleCloseDelete();
@@ -92,7 +83,7 @@ const getUserState = (input) => {
   };
 
   useEffect(() => {
-    getUsers(4, 1,NameValue,UserState);
+    getUsers(4, 1, NameValue, UserState);
   }, []);
 
   return (
@@ -105,118 +96,115 @@ const getUserState = (input) => {
         loginData={loginData}
       />
 
-      <div className="home-content mx-4 p-2 mt-4 ">
+      <div className="container-fluid px-3 px-md-4 mt-4">
         <div className="row d-flex align-items-center">
-          <div className="col-md-8">
+          <div className="col-12 col-md-8">
             <h3>Users Table</h3>
             <p>List of all registered users</p>
           </div>
         </div>
 
         <div className="ActionAboveTable mt-3">
-          <div className="row d-flex">
-            <div className="col-md-9 input-group w-75  border rounded-3 text-muted">
-              <span className="input-group-text bg-white border-light fs-6">
-                <i className="fa-solid fa-search"></i>
-              </span>
-              <input
-                type="text"
-                className="form-control border-light fs-6"
-                placeholder="Search here By Name..."
-                onChange={(e) => getNameValue(e)}
-              />
+          <div className="row g-2">
+            <div className="col-12 col-md-9">
+              <div className="input-group border rounded-3">
+                <span className="input-group-text bg-white border-light fs-6">
+                  <i className="fa-solid fa-search"></i>
+                </span>
+                <input
+                  type="text"
+                  className="form-control border-light fs-6"
+                  placeholder="Search here By Name..."
+                  onChange={(e) => getNameValue(e)}
+                />
+              </div>
             </div>
-            <div className="col-md-3 w-25">
-              <div className="input-group border  rounded-3">
-                <select 
+            <div className="col-12 col-md-3">
+              <div className="input-group border rounded-3">
+                <select
                   className="form-control border-light"
                   onChange={(input) => getUserState(input)}
                 >
                   <option value="">All Users</option>
-                    <option  value="1">
-                         User
-                    </option>
-                    <option value="2"> 
-                         Admin
-                    </option>
-                  
+                  <option value="1">User</option>
+                  <option value="2">Admin</option>
                 </select>
               </div>
             </div>
-            
-            
           </div>
         </div>
 
-        <table className="table table-striped table-hover mt-3">
-          <thead>
-            <tr>
-              <th>Username</th>
-              <th>Email</th>
-              <th>City</th>
-              <th>Phone</th>
-              <th className="text-center">Created</th>
-              <th className="text-center">Actions</th>
-            </tr>
-          </thead>
-          {isLoading ? (
-            <Loading />
-          ) : (
-            <tbody>
-              {users?.length > 0 ? (
-                users.map((user, index) => (
-                  <tr key={index}>
-                    <td>{user.userName}</td>
-                    <td>{user.email}</td>
-                    <td>{user.country}</td>
-                    <td>{user.phoneNumber}</td>
-                    <td className="text-center">
-                      {new Date(user.creationDate).toLocaleString()}
-                    </td>
-                    <td className="text-center">
-                      <div className="dropdown">
-                        <button
-                          className="btn p-0 border-0 bg-transparent"
-                          type="button"
-                          data-bs-toggle="dropdown"
-                          aria-expanded="false"
-                        >
-                          <i className="fa fa-ellipsis-h fs-5 text-secondary"></i>
-                        </button>
-                        <ul className="dropdown-menu shadow">
-                          <li>
-                            <button
-                              className="dropdown-item d-flex align-items-center gap-2 text-success"
-                              onClick={() => handleShowDetails(user)}
-                            >
-                              <i className="fa fa-eye text-success"></i> View Details
-                            </button>
-                          </li>
-                          {user.role !== "Admin" && (
+        <div className="table-responsive mt-3">
+          <table className="table table-striped table-hover">
+            <thead>
+              <tr>
+                <th>Username</th>
+                <th>Email</th>
+                <th>City</th>
+                <th>Phone</th>
+                <th className="text-center">Created</th>
+                <th className="text-center">Actions</th>
+              </tr>
+            </thead>
+            {isLoading ? (
+              <Loading />
+            ) : (
+              <tbody>
+                {users?.length > 0 ? (
+                  users.map((user, index) => (
+                    <tr key={index}>
+                      <td>{user.userName}</td>
+                      <td>{user.email}</td>
+                      <td>{user.country}</td>
+                      <td>{user.phoneNumber}</td>
+                      <td className="text-center">
+                        {new Date(user.creationDate).toLocaleString()}
+                      </td>
+                      <td className="text-center">
+                        <div className="dropdown">
+                          <button
+                            className="btn p-0 border-0 bg-transparent"
+                            type="button"
+                            data-bs-toggle="dropdown"
+                            aria-expanded="false"
+                          >
+                            <i className="fa fa-ellipsis-h fs-5 text-secondary"></i>
+                          </button>
+                          <ul className="dropdown-menu shadow">
                             <li>
                               <button
                                 className="dropdown-item d-flex align-items-center gap-2 text-success"
-                                onClick={() => handleShowDelete(user.id)}
+                                onClick={() => handleShowDetails(user)}
                               >
-                                <i className="fa fa-trash text-success"></i> Delete
+                                <i className="fa fa-eye text-success"></i> View Details
                               </button>
                             </li>
-                          )}
-                        </ul>
-                      </div>
+                            {user.role !== "Admin" && (
+                              <li>
+                                <button
+                                  className="dropdown-item d-flex align-items-center gap-2 text-success"
+                                  onClick={() => handleShowDelete(user.id)}
+                                >
+                                  <i className="fa fa-trash text-success"></i> Delete
+                                </button>
+                              </li>
+                            )}
+                          </ul>
+                        </div>
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan="6">
+                      <NoData />
                     </td>
                   </tr>
-                ))
-              ) : (
-                <tr>
-                  <td colSpan="6">
-                    <NoData />
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          )}
-        </table>
+                )}
+              </tbody>
+            )}
+          </table>
+        </div>
 
         <div className="d-flex mt-3 w-100">
           <nav aria-label="Page navigation">
