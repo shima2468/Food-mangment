@@ -1,31 +1,27 @@
-import { useEffect, useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
-import "./App.css";
+import "@fortawesome/fontawesome-free/css/all.min.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
-import "@fortawesome/fontawesome-free/css/all.min.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import AuthenticationLayout from "./modules/Shared/Components/AuthenticationLayout/AuthenticationLayout";
+import { ToastContainer } from "react-toastify";
+import "./App.css";
+import ChangePass from "./modules/Authentication/Components/Change-pass/ChangePass";
+import ForgetPass from "./modules/Authentication/Components/Forget-pass/ForgetPass";
+import Login from "./modules/Authentication/Components/Login/login";
+import LogOut from "./modules/Authentication/Components/LogOut/LogOut";
 import Register from "./modules/Authentication/Components/Register/Register";
 import ResetPass from "./modules/Authentication/Components/Reset-pass/ResetPass";
-import ForgetPass from "./modules/Authentication/Components/Forget-pass/ForgetPass";
 import VerifyAccount from "./modules/Authentication/Components/Verify-account/VerifyAccount";
-import NotFound from "./modules/Shared/Components/NotFound/NotFound";
-import MasterLayout from "./modules/Shared/Components/MasterLayout/MasterLayout";
-import Dashboard from "./modules/Dashboard/Components/Dashboard/Dashboard";
-import RecipesList from "./modules/Recipes/Components/RecipesList/RecipesList";
-import RecipeData from "./modules/Recipes/Components/RecipeData/RecipeData";
 import CategoriesList from "./modules/Categories/CategoriesList/CategoriesList";
 import CategoryData from "./modules/Categories/CategoryData/CategoryData";
-import UsersList from "./modules/Users/Components/UsersList/UsersList";
+import Dashboard from "./modules/Dashboard/Components/Dashboard/Dashboard";
 import FavList from "./modules/Favourites/Components/FavList/FavList";
-import Login from "./modules/Authentication/Components/Login/login";
-import { jwtDecode } from "jwt-decode";
+import RecipeData from "./modules/Recipes/Components/RecipeData/RecipeData";
+import RecipesList from "./modules/Recipes/Components/RecipesList/RecipesList";
+import AuthenticationLayout from "./modules/Shared/Components/AuthenticationLayout/AuthenticationLayout";
+import MasterLayout from "./modules/Shared/Components/MasterLayout/MasterLayout";
+import NotFound from "./modules/Shared/Components/NotFound/NotFound";
 import ProtectedRoute from "./modules/Shared/Components/ProtectedRoute/ProtectedRoute";
-import { ToastContainer } from "react-toastify";
-import LogOut from "./modules/Authentication/Components/LogOut/LogOut";
-import ChangePass from "./modules/Authentication/Components/Change-pass/ChangePass";
+import UsersList from "./modules/Users/Components/UsersList/UsersList";
 
 function App() {
   
