@@ -62,7 +62,7 @@ function App() {
       },
     ],
     {
-      // basename: "/Food-mangment", 
+      basename: "/Food-mangment", 
     }
   );
 
