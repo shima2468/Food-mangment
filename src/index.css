@@ -139,10 +139,9 @@ border-width: 0;
   background-color:rgba(0, 146, 77, 0.1) !important; 
   color: white !important;
   font-weight: bold;
-  /* border-radius: 8px; */
+  border-radius: 8px;
  border-left: 4px solid rgba(0, 146, 71, 1);
-
-
-
  
 }
+
+

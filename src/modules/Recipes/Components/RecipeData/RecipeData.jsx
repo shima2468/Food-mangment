@@ -70,7 +70,7 @@ export default function RecipeData() {
         RECIPES_URL.ADD_RECIPES,
         recipeData
       );
-      toast.success(response.data.message);
+      toast.success(response.data.message || "The recipe has been added successfully.");
       navigate("/dashboard/recipes");
     } catch (error) {
       console.error(error);

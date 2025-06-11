@@ -135,76 +135,77 @@ export default function UsersList({ loginData }) {
         </div>
 
         <div className="table-responsive mt-3">
-          <table className="table table-striped table-hover">
-            <thead>
-              <tr>
-                <th>Username</th>
-                <th>Email</th>
-                <th>City</th>
-                <th>Phone</th>
-                <th className="text-center">Created</th>
-                <th className="text-center">Actions</th>
-              </tr>
-            </thead>
-            {isLoading ? (
-              <Loading />
-            ) : (
-              <tbody>
-                {users?.length > 0 ? (
-                  users.map((user, index) => (
-                    <tr key={index}>
-                      <td>{user.userName}</td>
-                      <td>{user.email}</td>
-                      <td>{user.country}</td>
-                      <td>{user.phoneNumber}</td>
-                      <td className="text-center">
-                        {new Date(user.creationDate).toLocaleString()}
-                      </td>
-                      <td className="text-center">
-                        <div className="dropdown">
-                          <button
-                            className="btn p-0 border-0 bg-transparent"
-                            type="button"
-                            data-bs-toggle="dropdown"
-                            aria-expanded="false"
-                          >
-                            <i className="fa fa-ellipsis-h fs-5 text-secondary"></i>
-                          </button>
-                          <ul className="dropdown-menu shadow">
-                            <li>
-                              <button
-                                className="dropdown-item d-flex align-items-center gap-2 text-success"
-                                onClick={() => handleShowDetails(user)}
-                              >
-                                <i className="fa fa-eye text-success"></i> View Details
-                              </button>
-                            </li>
-                            {user.role !== "Admin" && (
-                              <li>
-                                <button
-                                  className="dropdown-item d-flex align-items-center gap-2 text-success"
-                                  onClick={() => handleShowDelete(user.id)}
-                                >
-                                  <i className="fa fa-trash text-success"></i> Delete
-                                </button>
-                              </li>
-                            )}
-                          </ul>
-                        </div>
-                      </td>
-                    </tr>
-                  ))
-                ) : (
-                  <tr>
-                    <td colSpan="6">
-                      <NoData />
-                    </td>
-                  </tr>
-                )}
-              </tbody>
-            )}
-          </table>
-        </div>
+  <table className="table table-striped table-hover">
+    <thead>
+      <tr>
+        <th>Username</th>
+        <th>Email</th>
+        <th>City</th>
+        <th>Phone</th>
+        <th className="text-center">Created</th>
+        <th className="text-center">Actions</th>
+      </tr>
+    </thead>
+    {isLoading ? (
+      <Loading />
+    ) : (
+      <tbody>
+        {users?.length > 0 ? (
+          users.map((user, index) => (
+            <tr key={index}>
+              <td>{user.userName}</td>
+              <td>{user.email}</td>
+              <td>{user.country}</td>
+              <td>{user.phoneNumber}</td>
+              <td className="text-center">
+                {new Date(user.creationDate).toLocaleString()}
+              </td>
+              <td className="text-center">
+                <div className="dropdown">
+                  <button
+                    className="btn p-0 border-0 bg-transparent"
+                    type="button"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                  >
+                    <i className="fa fa-ellipsis-h fs-5 text-secondary"></i>
+                  </button>
+                  <ul className="dropdown-menu shadow">
+                    <li>
+                      <button
+                        className="dropdown-item d-flex align-items-center gap-2 text-success"
+                        onClick={() => handleShowDetails(user)}
+                      >
+                        <i className="fa fa-eye text-success"></i> View Details
+                      </button>
+                    </li>
+                    {user.role !== "Admin" && (
+                      <li>
+                        <button
+                          className="dropdown-item d-flex align-items-center gap-2 text-success"
+                          onClick={() => handleShowDelete(user.id)}
+                        >
+                          <i className="fa fa-trash text-success"></i> Delete
+                        </button>
+                      </li>
+                    )}
+                  </ul>
+                </div>
+              </td>
+            </tr>
+          ))
+        ) : (
+          <tr>
+            <td colSpan="6">
+              <NoData />
+            </td>
+          </tr>
+        )}
+      </tbody>
+    )}
+  </table>
+</div>
+
 
         <div className="d-flex mt-3 w-100">
           <nav aria-label="Page navigation">

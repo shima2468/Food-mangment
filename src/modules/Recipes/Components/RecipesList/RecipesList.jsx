@@ -78,8 +78,8 @@ export default function RecipesList({ IsEditMode }) {
 
   const deleteRecipe = async () => {
     try {
-      await axiosInstance.delete(RECIPES_URL.DELETE_RECIPES(RecipeId));
-      toast.success("🗑️ تم حذف التصنيف بنجاح");
+     let response= await axiosInstance.delete(RECIPES_URL.DELETE_RECIPES(RecipeId));
+      toast.success(response.data.message || "The Recipe has been Deleted successfully.");
       getRecipeList();
       handleCloseDelete();
     } catch (error) {
@@ -253,7 +253,7 @@ export default function RecipesList({ IsEditMode }) {
                    {  RecipeList.map((item, index) => (
                   <tr key={index}>
                     <td>{item.name}</td>
-                    <td className="text-center w-25 h-25">
+                    <td className="text-center w-25">
                       <img className="item-img" src={item.imagePath?`${baseImg}${item.imagePath}`: fallback} alt="" />
                     </td>
                     <td className="text-center">{item.price}</td>
