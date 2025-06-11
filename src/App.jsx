@@ -4,6 +4,7 @@ import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "./App.css";
+
 import ChangePass from "./modules/Authentication/Components/Change-pass/ChangePass";
 import ForgetPass from "./modules/Authentication/Components/Forget-pass/ForgetPass";
 import LogOut from "./modules/Authentication/Components/LogOut/LogOut";
@@ -21,61 +22,52 @@ import MasterLayout from "./modules/Shared/Components/MasterLayout/MasterLayout"
 import NotFound from "./modules/Shared/Components/NotFound/NotFound";
 import ProtectedRoute from "./modules/Shared/Components/ProtectedRoute/ProtectedRoute";
 import UsersList from "./modules/Users/Components/UsersList/UsersList";
-import Login from "./modules/Authentication/Components/Login/Login"
+import Login from "./modules/Authentication/Components/Login/Login";
 
 function App() {
-  
-  // the first side from Route
-  const routes = createBrowserRouter([
-    // 2 main Layout
-    // 1. هيكون فاضي لما اعمل Run for app
+  const routes = createBrowserRouter(
+    [
+      {
+        path: "",
+        element: <AuthenticationLayout />,
+        children: [
+          { index: true, element: <Login /> },
+          { path: "Log-in", element: <Login /> },
+          { path: "register", element: <Register /> },
+          { path: "reset-pass", element: <ResetPass /> },
+          { path: "forget-pass", element: <ForgetPass /> },
+          { path: "verify-account", element: <VerifyAccount /> },
+        ],
+        errorElement: <NotFound />,
+      },
+      {
+        path: "/dashboard",
+        element: (
+          <ProtectedRoute>
+            <MasterLayout />
+          </ProtectedRoute>
+        ),
+        children: [
+          { index: true, element: <Dashboard /> },
+          { path: "recipes", element: <RecipesList /> },
+          { path: "recipe-Data", element: <RecipeData /> },
+          { path: "categories", element: <CategoriesList /> },
+          { path: "category-Data", element: <CategoryData /> },
+          { path: "users", element: <UsersList /> },
+          { path: "fav", element: <FavList /> },
+          { path: "logout", element: <LogOut /> },
+          { path: "change-pass", element: <ChangePass /> },
+        ],
+        errorElement: <NotFound />,
+      },
+    ],
     {
-      path: "",
-      // AuthLayout inside it exist login,Register,Forget....
-      element: <AuthenticationLayout />,
-      children: [
-        // لما يكون الباث فاضي هي اول حاجه هتطلع لو كنا داخل الاب الاوث
-        // الديفولت لو انا Auth
-        { index: true, element: <Login /> },
-        { path: "Log-in", element: <Login/> },
-        { path: "register", element: <Register /> },
-        { path: "reset-pass", element: <ResetPass /> },
-        { path: "forget-pass", element: <ForgetPass /> },
-        { path: "verify-account", element: <VerifyAccount /> },
-      ],
-      // لو كل الي داخل ال Auth الراوت مش صح بدنا نهدنل ال not found
-      errorElement: <NotFound />,
-    },
-    // 2. الراوت التاني لل Master Layout
-    {
-      path: "/dashboard",
-      element: (
-        <ProtectedRoute >
-         
-          <MasterLayout/>
-        </ProtectedRoute>
-      ),
-      children: [
-        // Defult Rout inside MasterLayout
-        { index: true, element: <Dashboard /> },
-        { path: "recipes", element: <RecipesList /> },
-        { path: "recipe-Data", element: <RecipeData /> },
-        {
-          path: "categories",
-          element: <CategoriesList/>,
-        },
-        { path: "category-Data", element: <CategoryData /> },
-        { path: "users", element: <UsersList /> },
-        { path: "fav", element: <FavList /> },
-        { path: "logout", element: <LogOut /> },
-        { path: "change-pass", element: <ChangePass/> },
-      ],
-      errorElement: <NotFound />,
-    },
-  ]);
+      basename: "/Food-mangment", 
+    }
+  );
+
   return (
     <>
-      {/* // the Secound side from Route */}
       <ToastContainer />
       <RouterProvider router={routes}></RouterProvider>
     </>
